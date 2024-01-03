@@ -13,7 +13,8 @@ import Fondo from '../asserts/fondo'
 import Fade from 'react-reveal/Fade'
 import Swing from 'react-reveal/Swing'
 import Flip from 'react-reveal/Flip'
-import curriculum from '../asserts/fotoIO.jpeg'
+import miFoto from '../asserts/fotoIO.jpeg'
+import { useEffect, useState } from 'react'
 
 const HomePage = () => {
   const projectsData = [
@@ -74,6 +75,61 @@ const HomePage = () => {
     },
   ]
 
+  const skillsData = [
+    {
+      id: 1,
+      name: 'Programming Languages',
+      content: [
+        'JavaScript',
+        'TypeScript',
+        'Java',
+        'Python',
+        'Php',
+        'C#',
+        'Kotlin',
+      ],
+    },
+    {
+      id: 2,
+      name: 'Databases',
+      content: ['MySQL', 'MongoDB', 'Firebase', 'SQL Server'],
+    },
+    {
+      id: 3,
+      name: 'Frameworks & Technologies',
+      content: [
+        'React',
+        'React Native',
+        'Angular',
+        'Ionic',
+        'Figma',
+        'Adobe XD',
+      ],
+    },
+  ]
+
+  const [selectedKey, setSelectedKey] = useState('#start')
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setSelectedKey(entry.target.id)
+          }
+        })
+      },
+      { threshold: 0.7 }
+    )
+
+    const sections = document.querySelectorAll('section')
+    sections.forEach((section) => observer.observe(section))
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section))
+    }
+  }, [])
+
   const handleRedirect = (url) => {
     window.open(url, '_blank') // Abre el URL en una nueva ventana del navegador
   }
@@ -83,55 +139,70 @@ const HomePage = () => {
       <div
         style={{
           position: 'absolute',
-          height: '200px',
           width: '100%',
           zIndex: '-1',
           top: 0,
+          overflow: 'hidden',
         }}
       >
         <Fondo />
       </div>
       <Navbar
-        style={{
-          backgroundColor: '#fff',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        collapseOnSelect
+        expand="lg"
+        bg="light"
+        variant="light"
         sticky="top"
-        activeKey="#start"
+        style={{ justifyContent: 'center' }}
       >
-        <Nav variant="underline">
-          <Nav.Link href="#start" style={{ margin: '10px' }}>
-            HOME
-          </Nav.Link>
-          <Nav.Link href="#aboutme" style={{ margin: '10px' }}>
-            ABOUT ME
-          </Nav.Link>
-          <Nav.Link href="#myprojects" style={{ margin: '10px' }}>
-            MY PROJECTS
-          </Nav.Link>
-          <Nav.Link href="#contacme" style={{ margin: '10px' }}>
-            CONTACT ME
-          </Nav.Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse
+          id="responsive-navbar-nav"
+          className="justify-content-center"
+        >
+          <Nav
+            className="text-center"
+            variant="underline"
+            activeKey={selectedKey}
+            onSelect={setSelectedKey}
+          >
+            <Nav.Link href="#start">HOME</Nav.Link>
+            <Nav.Link href="#aboutme">ABOUT ME</Nav.Link>
+            <Nav.Link href="#myprojects">MY PROJECTS</Nav.Link>
+            <Nav.Link href="#contactme">CONTACT ME</Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
-      <div style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
+      <div
+        style={{
+          width: '85%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          overflow: 'hidden',
+        }}
+      >
         <div
           id="start"
           className="startsection"
-          style={{ width: '100%', height: '80vh' }}
+          style={{
+            width: '100%',
+            height: '600px',
+            marginTop: '5%',
+            marginBottom: '5%',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          }}
         >
           <div
             className="info"
             style={{
               display: 'flex',
-              float: 'left',
-              flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              height: '100%',
-              width: '35vw',
               textAlign: 'left',
+              padding: '0 20px',
+              overflow: 'hidden',
+              float: 'left',
             }}
           >
             <div
@@ -158,6 +229,7 @@ const HomePage = () => {
                 transform: 'rotate(120deg)',
                 marginTop: '-200px',
                 marginLeft: '-1100px',
+                overflow: 'hidden',
               }}
             ></div>
             <Fade left>
@@ -166,6 +238,7 @@ const HomePage = () => {
                   width: '80%',
                   marginLeft: 'auto',
                   marginRight: 'auto',
+                  overflow: 'hidden',
                 }}
               >
                 <h1>
@@ -232,42 +305,19 @@ const HomePage = () => {
               style={{
                 display: 'flex',
                 float: 'right',
-                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                height: '100%',
-                width: '35vw',
               }}
             >
-              <div
-                style={{
-                  position: 'absolute',
-                  zIndex: '-1',
-                  width: '40vw',
-                  height: '25vw',
-                  backgroundColor: '#fff',
-                  borderRadius: '50%',
-                  transform: 'rotate(20deg)',
-                  marginTop: '50px',
-                }}
-              ></div>
-              <div
-                style={{
-                  position: 'absolute',
-                  zIndex: '-1',
-                  width: '25vw',
-                  height: '25vw',
-                  backgroundColor: '#fff',
-                  borderRadius: '50%',
-                  transform: 'rotate(120deg)',
-                  marginTop: '200px',
-                  marginLeft: '50px',
-                }}
-              ></div>
               <Image
-                src={curriculum}
+                src={miFoto}
                 roundedCircle
-                style={{ width: '30vw', height: '30vw', objectFit: 'cover' }}
+                style={{
+                  width: '40vw',
+                  height: '40vw',
+                  objectFit: 'cover',
+                  overflow: 'hidden',
+                }}
               />
             </div>
           </Fade>
@@ -278,8 +328,8 @@ const HomePage = () => {
           className="aboutmesection"
           style={{
             width: '100%',
-            marginTop: '100px',
-            display: 'flex',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           }}
         >
           <div
@@ -325,7 +375,7 @@ const HomePage = () => {
               alignItems: 'center',
               textAlign: 'center',
               paddingTop: '100px',
-              width: '50%',
+              width: '70%',
               marginRight: 'auto',
               marginLeft: 'auto',
             }}
@@ -341,10 +391,12 @@ const HomePage = () => {
                 <b> ABOUT ME </b>
               </p>
               <h1>
-                <b style={{ color: '#7168A6' }}>Let me introduce myself</b>
+                <b style={{ color: '#7168A6', width: '90%' }}>
+                  Let me introduce myself
+                </b>
               </h1>
               <br />
-              <p>
+              <p style={{ paddingLeft: '5%', paddingRight: '5%' }}>
                 I'm a software engineer passionate about creating impactful
                 digital experiences. Although my specialty lies in frontend
                 development, my journey also encompasses solid experience in the
@@ -354,18 +406,17 @@ const HomePage = () => {
             </Fade>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                 alignItems: 'center',
               }}
             >
               <Fade left>
                 <p
                   style={{
-                    width: '60%',
-                    marginLeft: '-20%',
                     textAlign: 'left',
+                    paddingLeft: '5%',
+                    paddingRight: '5%',
                   }}
                 >
                   In my free time, I explore emerging fields such as artificial
@@ -376,9 +427,9 @@ const HomePage = () => {
               <Fade right>
                 <p
                   style={{
-                    width: '60%',
-                    marginRight: '-20%',
                     textAlign: 'right',
+                    paddingLeft: '5%',
+                    paddingRight: '5%',
                   }}
                 >
                   I consider every day an opportunity to learn something new and
@@ -414,142 +465,40 @@ const HomePage = () => {
               <b style={{ color: '#7168A6' }}>My skills</b>
             </h1>
             <br />
-            <div
-              className="cards"
-              style={{
-                display: 'flex',
-                float: 'left',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'start',
-                width: '60vw',
-                height: '15vw',
-              }}
-            >
-              <Swing>
-                <Card
-                  style={{
-                    marginRight: '20px',
-                    marginTop: '0vh',
-                    padding: '20px',
-                    width: '20vw',
-                  }}
-                >
-                  <Card.Body>
-                    <ListGroup.Item>
-                      <b>Programming Languages</b>
-                      <br />
-                      <br />
-                      <Badge bg="primary" className="ms-1">
-                        JavaScript
-                      </Badge>
-                      <Badge bg="primary" className="ms-1">
-                        TypeScript
-                      </Badge>
-                      <Badge bg="primary" className="ms-1">
-                        Java
-                      </Badge>
-                      <Badge bg="primary" className="ms-1">
-                        Python
-                      </Badge>
-                      <Badge bg="primary" className="ms-1">
-                        Php
-                      </Badge>
-                      <Badge bg="primary" className="ms-1">
-                        C#
-                      </Badge>
-                      <Badge bg="primary" className="ms-1">
-                        Kotlin
-                      </Badge>
-                    </ListGroup.Item>
-                  </Card.Body>
-                </Card>
-              </Swing>
-              <Swing>
-                <Card
-                  style={{
-                    marginRight: '20px',
-                    marginTop: '10vh',
-                    padding: '20px',
-                    width: '20vw',
-                  }}
-                >
-                  <Card.Body>
-                    <ListGroup.Item>
-                      <b>Databases</b>
-                      <br />
-                      <br />
-                      <Badge bg="warning" className="ms-1">
-                        MySQL
-                      </Badge>
-                      <Badge bg="warning" className="ms-1">
-                        MongoDB
-                      </Badge>
-                      <Badge bg="warning" className="ms-1">
-                        Firebase
-                      </Badge>
-                      <Badge bg="warning" className="ms-1">
-                        SQL Server
-                      </Badge>
-                    </ListGroup.Item>
-                  </Card.Body>
-                </Card>
-              </Swing>
-              <Swing>
-                <Card
-                  style={{
-                    marginRight: '20px',
-                    marginTop: '0vh',
-                    padding: '20px',
-                    width: '20vw',
-                  }}
-                >
-                  <Card.Body>
-                    <ListGroup.Item>
-                      <b>Frameworks & Technologies</b>
-                      <br />
-                      <br />
-                      <Badge bg="success" className="ms-1">
-                        React
-                      </Badge>
-                      <Badge bg="success" className="ms-1">
-                        React Native
-                      </Badge>
-                      <Badge bg="success" className="ms-1">
-                        Angular
-                      </Badge>
-                      <Badge bg="success" className="ms-1">
-                        Ionic
-                      </Badge>
-                      <Badge bg="success" className="ms-1">
-                        Figma
-                      </Badge>
-                      <Badge bg="success" className="ms-1">
-                        Adobe XD
-                      </Badge>
-                    </ListGroup.Item>
-                  </Card.Body>
-                </Card>
-              </Swing>
+
+            <div className="cards">
+              <Row xs={1} md={3} className="g-4">
+                {skillsData.map((item) => (
+                  <Col key={item.id}>
+                    <Swing>
+                      <Card>
+                        <Card.Body>
+                          <ListGroup.Item>
+                            <b>{item.name}</b>
+                            <br />
+                            <br />
+                            {item.content.map((skill) => (
+                              <Badge bg="primary" className="ms-1">
+                                {skill}
+                              </Badge>
+                            ))}
+                          </ListGroup.Item>
+                        </Card.Body>
+                      </Card>
+                    </Swing>
+                  </Col>
+                ))}
+              </Row>
             </div>
           </div>
           <div
             style={{
               position: 'absolute',
               zIndex: '-1',
-              transform: 'rotate(100deg)',
-              marginTop: '750px',
-              marginLeft: '-30vw',
-            }}
-          >
-            <FondoBurbujas />
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              zIndex: '-1',
-              marginTop: '1000px',
-              marginLeft: '20vw',
+              transform: 'rotate(120deg)',
+              marginTop: '50%',
+              overflow: 'hidden',
+              width: '70vw',
             }}
           >
             <FondoBurbujas />
@@ -694,15 +643,11 @@ const HomePage = () => {
               </p>
             </div>
           </Fade>
+
           <Row xs={1} md={2} className="g-4">
             {projectsData.map((project) => (
               <Col key={project.id}>
-                <Card
-                  style={{
-                    height: '33rem',
-                  }}
-                  bg={project.urlimg}
-                >
+                <Card bg={project.urlimg}>
                   <Card.Img
                     variant="top"
                     src={project.urlimg}
@@ -734,8 +679,8 @@ const HomePage = () => {
                             <img
                               src={item}
                               alt="android"
-                              width="50"
-                              height="50"
+                              width="40"
+                              height="40"
                             />
                           </div>
                         ))}
@@ -797,7 +742,7 @@ const HomePage = () => {
         </div>
         <br />
         <div
-          id="contacme"
+          id="contactme"
           className="contactsection"
           style={{
             width: '100%',
@@ -842,8 +787,57 @@ const HomePage = () => {
             width: '80%',
             marginLeft: 'auto',
             marginRight: 'auto',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
           }}
         >
+          <Fade left cascade>
+            <div
+              className="cardemail"
+              style={{
+                display: 'flex',
+                float: 'left',
+                flexDirection: 'column',
+                textAlign: 'left',
+                marginTop: '15%',
+                marginLeft: '5%',
+                marginRight: '5%',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '12px',
+                  letterSpacing: '2px',
+                  marginBottom: '0px',
+                }}
+              >
+                <b>SEND ME AN EMAIL</b>
+              </p>
+              <h1>
+                <b style={{ color: '#7168A6' }}>E-mail</b>
+              </h1>
+              <br />
+              <p>
+                If social media isn't your thing, don't worry! Feel free to send
+                me an email. I'm always waiting to respond as soon as possible!
+              </p>
+              <br />
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'left',
+                  width: '100%',
+                }}
+              >
+                <Card>
+                  <Card.Body>
+                    <MailIcon /> <b>tarmijos02@gmai.com</b>
+                  </Card.Body>
+                </Card>
+              </div>
+            </div>
+          </Fade>
           <Fade right cascade>
             <div
               className="cardredes"
@@ -851,8 +845,9 @@ const HomePage = () => {
                 display: 'flex',
                 float: 'right',
                 flexDirection: 'column',
-                width: '30vw',
-                marginTop: '50px',
+                marginTop: '5%',
+                marginLeft: '5%',
+                marginRight: '5%',
                 textAlign: 'right',
               }}
             >
@@ -911,52 +906,6 @@ const HomePage = () => {
                   }}
                   style={{ cursor: 'pointer' }}
                 />
-              </div>
-            </div>
-          </Fade>
-          <Fade left cascade>
-            <div
-              className="cardemail"
-              style={{
-                display: 'flex',
-                float: 'left',
-                flexDirection: 'column',
-                textAlign: 'left',
-                width: '30vw',
-                marginTop: '150px',
-              }}
-            >
-              <p
-                style={{
-                  fontSize: '12px',
-                  letterSpacing: '2px',
-                  marginBottom: '0px',
-                }}
-              >
-                <b>SEND ME AN EMAIL</b>
-              </p>
-              <h1>
-                <b style={{ color: '#7168A6' }}>E-mail</b>
-              </h1>
-              <br />
-              <p>
-                If social media isn't your thing, don't worry! Feel free to send
-                me an email. I'm always waiting to respond as soon as possible!
-              </p>
-              <br />
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'left',
-                  width: '100%',
-                }}
-              >
-                <Card>
-                  <Card.Body>
-                    <MailIcon /> <b>tarmijos02@gmai.com</b>
-                  </Card.Body>
-                </Card>
               </div>
             </div>
           </Fade>

@@ -1,8 +1,8 @@
 import * as React from 'react'
 const FondoBurbujas = () => (
   <svg
-    width="1000"
-    height="700"
+    width="100%"
+    height="100%"
     viewBox="0 0 100 100"
     xmlns="http://www.w3.org/2000/svg"
   >

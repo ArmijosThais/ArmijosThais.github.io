@@ -3,7 +3,7 @@ import HomePage from './views/HomePage'
 
 function App() {
   return (
-    <div>
+    <div style={{width:'100%', marginLeft:'auto', marginRight:'auto'}}>
       <HomePage />
     </div>
   )
